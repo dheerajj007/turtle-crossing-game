@@ -17,7 +17,7 @@ screen.onkey(player.move_left, "Left")
 screen.onkey(player.move_right, "Right")
 
 car_manager = CarManager()
-
+scoreboard = Scoreboard()
 
 game_is_on = True
 while game_is_on:
@@ -25,6 +25,15 @@ while game_is_on:
     screen.update()
     car_manager.create_car()
     car_manager.move_cars()
-
+    
+    for car in car_manager.all_cars:
+        if car.distance(player) < 20:
+            game_is_on = False
+            scoreboard.game_over()
+    
+    if player.is_at_finish():
+        player.go_to_start()
+        car_manager.level_up()
+        scoreboard.score_up()
 
 screen.mainloop()
